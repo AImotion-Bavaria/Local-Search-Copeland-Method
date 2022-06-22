@@ -14,16 +14,15 @@ class CopelandRunner:
         self.max = max
         self.winner_set = []
     def run(self):
-        try:
             self.inst.add_file(self.datafile)
-        self.inst.add_string("old_solutions = [];")
-        self.result = self.inst.solve(all_solutions=True)
-        self.rankings = [self.result[i, "util_per_agent"] for i in range(len(self.result))]
-        no_of_candidates = len(self.rankings)
-        no_of_agents = len(self.rankings[0])
-        pairwise_score = pairwiseScoreCalcListFull(self.rankings, no_of_candidates, no_of_agents)
-        self.copeland_scores = copelandScoreFull(pairwise_score, no_of_candidates, no_of_agents)
-        self.maximize() if self.max else self.minimize()
+            self.inst.add_string("old_solutions = [];")
+            self.result = self.inst.solve(all_solutions=True)
+            self.rankings = [self.result[i, "util_per_agent"] for i in range(len(self.result))]
+            no_of_candidates = len(self.rankings)
+            no_of_agents = len(self.rankings[0])
+            pairwise_score = pairwiseScoreCalcListFull(self.rankings, no_of_candidates, no_of_agents)
+            self.copeland_scores = copelandScoreFull(pairwise_score, no_of_candidates, no_of_agents)
+            self.maximize() if self.max else self.minimize()
     def minimize(self):
         lowest_copeland_scores = min(self.copeland_scores)
         for idx in range(0, len(self.copeland_scores)):

@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 logging.basicConfig(filename="model-analysis.log", level=logging.DEBUG)
 
 from minizinc import Instance, Model, Result, Solver, Status
-
+from pathlib import Path
 from celluloid import Camera
 SOLVER = "gecode"
 WELFARE = "social_welfare"
@@ -31,6 +31,12 @@ WORST_CASE = "worst_case"
 BEST_CASE = "best_case"
 RANDOM_WELFARES = "random_welfares"
 RANDOM_DEC_VARS = "random_dec_vars"
+debug_dir = ("debug")
+debug = True
+
+def create_debug_folder():
+    if not os.path.isdir(debug_dir):
+        os.makedirs(debug_dir)
 
 def getWelfareDistribution(model, datafile, search_annot):
     model_file = "./models/"+model+"/"+model+"_standalone.mzn"
@@ -52,8 +58,11 @@ def getWelfareDistribution(model, datafile, search_annot):
         # Find and print all intermediate solutions
         print(f"{search_annot} traversal")
         with instance.branch() as inst:
-            result = inst.solve(all_solutions=True)
-
+            if debug:
+                debug_file =  Path(os.path.join(debug_dir, "debug_output.txt"))
+                result = inst.solve(all_solutions=True, verbose=True, debug_output=debug_file)
+            else:
+                result = inst.solve(all_solutions=True)
             welfares = []
             for i in range(len(result)):
                 welfares.append(result[i, WELFARE])
@@ -147,8 +156,9 @@ def plot_gif(welfares, model, data, search_annot):
 if __name__ == "__main__":
     models = ["project_assignment"] #, "project_assignment", "photo_placement_bipolar"
     models = ["photo_placement_bipolar", "project_assignment", "vehicle_routing", "scheduling"]
+    # just using the last line to restrict the attention to some models only
     models = ["scheduling"]
-    #models = ["vehicle_routing"]
+    create_debug_folder()
 
     for model in models:
         directory = f"./models/{model}/data"
