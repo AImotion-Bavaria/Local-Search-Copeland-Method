@@ -1,5 +1,6 @@
 # Towards Copeland Optimization in Combinatorial Problems
-NOTE: To run the project you must have minzinc installed.
+NOTE: To run the project you must have minzinc installed. That involves the regular MiniZinc installation,
+and `minizinc-python` (make sure that the path to the MiniZinc executable is in the PATH system environment variable.)
 ## Directory Structure
 * `README.md`: This file.
 * `simple_diversity.py`: The file opens a model from the models directory, solves the constraint satisfaction problem(using minizinc and python-minizinc), and then writes the solution to a pickled file. The pickled file stores all the solutions, utilities from all agents, and the copeland score over all solutions(referred to as the ground truth in the paper). The pickled files are stored in a directory titled with the model name followed by '_profiles' in the home directory.
