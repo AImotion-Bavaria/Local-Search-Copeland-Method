@@ -34,6 +34,6 @@ function var int: copeland(array[int, int] of int: old_sols, array[int] of var i
    copeland_pos(old_sols, new_sol) - copeland_neg(old_sols, new_sol);
 %-----------------------------------------------------------------------
   
-constraint forall(i in index_set_1of2(old_sols))(copeland(old_sols, new_sol) > copeland(old_sols, [old_sols[i,j]|j in index_set_2of2(old_sols)]));
+constraint forall(i in index_set_1of2(old_sols))(copeland(old_sols, new_sol) >= copeland(old_sols, [old_sols[i,j]|j in index_set_2of2(old_sols)]));
 
 solve satisfy;
